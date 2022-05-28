@@ -1,0 +1,25 @@
+{
+  "name": "counselor-leaderboard",
+  "version": "1.0.0",
+  "description": "### Tools * Deployed on Heroku",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitprj/counselor-leaderboard.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bitprj/counselor-leaderboard/issues"
+  },
+  "homepage": "https://github.com/bitprj/counselor-leaderboard#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "node-fetch": "^3.2.4"
+  }
+}

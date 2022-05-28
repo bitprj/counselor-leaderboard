@@ -4,6 +4,7 @@ var router = express.Router();
 import fetch from 'node-fetch'
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+const ISOdate = "2022-05-01T16:51:19.000Z";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 app.set('view engine', 'ejs');
@@ -23,48 +24,30 @@ router.get('/', function (req, res) {
 });
 
 router.get('/api/leaderboard', async function (req, res) {
-    const gqlrequest = `
+    var users = [];
+    var gqlrequest = `
     query getCount {
-        users_progress(order_by: {startTime: desc}, where: {repoName: {_eq: "${users[i].repo_name}"}, user: {_eq: "${users[i].username}"}}) {
+        users_progress(where: {startTime: {_gt: "${ISOdate}"}}, order_by: {count: desc}, limit: 1) {
+          user
           count
-          title
-          repo
         }
-      }     
-    `;
+    }`;
 
-    /*
-    query getCount {
-  users_progress(where: {startTime: {_gt: "2022-05-01T16:51:19.000Z"}}, order_by: {count: desc}, limit: 1) {
-    user
-    count
-  }
-}
+    for (var i = 0; i < 10; i++) {
+        var user = await queryData(gqlrequest);
+        users.push(user.data.users_progress[0].user);
+        console.log("Added " + user.data.users_progress[0].user + " to leaderboard");
+        console.log("Count: " + user.data.users_progress[0].count);
+        gqlrequest = createRequest(users);
+    }
 
-query getCount2 {
-  users_progress(where: {startTime: {_gt: "2022-05-01T16:51:19.000Z"}, user: {_neq: "emsesc"}}, order_by: {count: desc}, limit: 1) {
-    user
-    count
-  }
-}
-
-query getCount3 {
-  users_progress(where: {startTime: {_gt: "2022-05-01T16:51:19.000Z"}, user: {_neq: "emsesc"}, _and: {user: {_neq: "macbarnes04"}}}, order_by: {count: desc}, limit: 1) {
-    user
-    count
-  }
-}
-*/
-
-
-    var topTen = await queryData(gqlrequest);
-    res.send(topTen);
+    res.send({"topUsers": users});
 });
 
 const queryData = async (queryString) => {
     const HASURA_ADMIN_SECRET = process.env.HASURA_ADMIN_SECRET;
     const HASURA_ENDPOINT = process.env.HASURA_ENDPOINT;
-  
+
     console.log(queryString);
     const data = await fetch(HASURA_ENDPOINT, {
       method: "POST",
@@ -78,6 +61,40 @@ const queryData = async (queryString) => {
   
     return responseData;
   };
+
+const createRequest = (users) => {
+    var gqlrequest = '';
+
+    if (users.length > 0) {
+        gqlrequest = `
+        query getCount {
+            users_progress(where: {startTime: {_gt: "${ISOdate}"}, user: {_neq: "${users[0]}"},`;
+        for (var i = 1; i < users.length; i++) {
+            gqlrequest += ` _and: {user: {_neq: "${users[i]}"},`;
+        }
+
+        gqlrequest = gqlrequest.slice(0, -1);
+        for (var i = 0; i < users.length - 1; i++) {
+            gqlrequest += "}"
+        }
+
+        gqlrequest += `} order_by: {count: desc}, limit: 1) {
+                user
+                count
+            }
+        }`;
+    }
+    /*
+            query getCount {
+            users_progress(where: {startTime: {_gt: "2022-05-01T16:51:19.000Z"}, user: {_neq: "emsesc"}, _and: {user: {_neq: "macbarnes04"}, _and: {user: {_neq: "noclouthere"}, _and: {user: {_neq: "iyarce"}, _and: {user: {_neq: "leahsliu"}, _and: {user: {_neq: "BigFace1V10"}, _and: {user: {_neq: "jedjohan"}, _and: {user: {_neq: "DrikaRenee"}, _and: {user: {_neq: "adaezy"}}}}}}}}}} order_by: {count: desc}, limit: 1) {
+                user
+                count
+            }
+        }
+    */
+
+    return gqlrequest;
+} 
 
 app.listen(process.env.PORT || 3000,
     () => console.log("Server is running..."));
