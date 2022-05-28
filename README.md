@@ -12,5 +12,5 @@
 * `/api/leaderboard` endpoint in backend returns object of top ten users
 
 ```
-{"topUsers": ["example", "example", "example", "example", "example", "example", "example", "example", "example", "example"}
+{"topUsers": ["example", "example", "example", "example", "example", "example", "example", "example", "example", "example"]};
 ```
