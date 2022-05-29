@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <title>Bit Project | Serverless Camp Student Tracker</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <!-- Image and text -->
+    <nav class="navbar navbar-dark bg-dark shadow">
+      <a class="navbar-brand d-flex align-items-center" href="/">
+        <img
+          src="https://www.bitproject.org/_next/image?url=%2FserverlessLogo.svg&w=256&q=75"
+          width="30"
+          height="30"
+          alt="Bit Project Serverless Logo"
+        />
+        <span class="font-weight-bold ml-2"
+          >Serverless Camp
+          <span style="color: #faca46">Student Tracker</span></span
+        >
+      </a>
+    </nav>
+
+    <div class="container mt-4">
+      <table class="table table-dark" id="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">GitHub Username</th>
+            <th scope="col">Step Name</th>
+            <th scope="col">Step Number</th>
+            <th scope="col">Repository</th>
+            <th scope="col">Started this step at</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- javascript autopopulates what's in here -->
+        </tbody>
+      </table>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.slim.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.7/js/tether.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/index.js"></script>
+  </body>
+</html>
