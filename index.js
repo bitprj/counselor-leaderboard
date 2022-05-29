@@ -28,14 +28,17 @@ router.get('/api/leaderboard', async function (req, res) {
     var gqlrequest = `
     query getCount {
         users_progress(where: {startTime: {_gt: "${ISOdate}"}}, order_by: {count: desc}, limit: 1) {
-          user
-          count
+            user
+            count
+            repo
+            title
+            startTime
         }
     }`;
 
     for (var i = 0; i < 10; i++) {
         var user = await queryData(gqlrequest);
-        users.push(user.data.users_progress[0].user);
+        users.push({"user": user.data.users_progress[0].user, "count": user.data.users_progress[0].count, "repoLink": user.data.users_progress[0].repo, "title": user.data.users_progress[0].title, "startTime": user.data.users_progress[0].startTime});
         console.log("Added " + user.data.users_progress[0].user + " to leaderboard");
         console.log("Count: " + user.data.users_progress[0].count);
         gqlrequest = createRequest(users);
@@ -68,9 +71,9 @@ const createRequest = (users) => {
     if (users.length > 0) {
         gqlrequest = `
         query getCount {
-            users_progress(where: {startTime: {_gt: "${ISOdate}"}, user: {_neq: "${users[0]}"},`;
+            users_progress(where: {startTime: {_gt: "${ISOdate}"}, user: {_neq: "${users[0].user}"},`;
         for (var i = 1; i < users.length; i++) {
-            gqlrequest += ` _and: {user: {_neq: "${users[i]}"},`;
+            gqlrequest += ` _and: {user: {_neq: "${users[i].user}"},`;
         }
 
         gqlrequest = gqlrequest.slice(0, -1);
@@ -81,6 +84,9 @@ const createRequest = (users) => {
         gqlrequest += `} order_by: {count: desc}, limit: 1) {
                 user
                 count
+                repo
+                title
+                startTime
             }
         }`;
     }

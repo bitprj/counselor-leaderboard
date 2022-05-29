@@ -1,24 +1,24 @@
-window.onload = () => {
+window.onload = async () => {
   console.log("index.js was loaded...");
 
   let body = document.getElementById("table-body");
-
-  // SAMPLE DATA
-  let name = "Ganning Xu";
-  let github = "@ganning127";
-  let stepName = "Getting started with serverless";
-  let stepNumber = 2;
-  let repository = "https://github.com/ganning127/bp-serverless";
-  let started = "5/12/22";
+  
+  var users = await fetch("/api/leaderboard");
+  users = await users.json();
+  users = users.topUsers;
+  console.log(users);
 
   for (let i = 0; i < 10; i++) {
+    let github = users[i].user;
+    let stepName = users[i].title;
+    let stepNumber = users[i].count;
+    let repository = users[i].repoLink;
+    let started = users[i].startTime.substring(0, 10);
+
     let row = document.createElement("tr");
     let valIndex = document.createElement("th");
     valIndex.setAttribute("scope", "row");
     valIndex.textContent = i + 1;
-
-    let valName = document.createElement("td");
-    valName.textContent = name;
 
     let valGithub = document.createElement("td");
     valGithub.textContent = github;
@@ -40,7 +40,6 @@ window.onload = () => {
     valStarted.textContent = started;
 
     row.appendChild(valIndex);
-    row.appendChild(valName);
     row.appendChild(valGithub);
     row.appendChild(valStepname);
     row.appendChild(valStepnumber);
