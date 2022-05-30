@@ -9,3 +9,7 @@ a {
 a:hover {
   color: #fabb0d;
 }
+
+.hidden {
+  display: none;
+}
