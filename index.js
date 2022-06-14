@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 import pkg from "dotenv";
 pkg.config();
 
-const ISOdate = "2022-05-01T16:51:19.000Z";
+const ISOdate = "2022-06-13T13:26:00.000Z";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 app.set("view engine", "ejs");
