@@ -106,14 +106,6 @@ const createRequest = (users) => {
             }
         }`;
   }
-  /*
-            query getCount {
-            users_progress(where: {startTime: {_gt: "2022-05-01T16:51:19.000Z"}, user: {_neq: "emsesc"}, _and: {user: {_neq: "macbarnes04"}, _and: {user: {_neq: "noclouthere"}, _and: {user: {_neq: "iyarce"}, _and: {user: {_neq: "leahsliu"}, _and: {user: {_neq: "BigFace1V10"}, _and: {user: {_neq: "jedjohan"}, _and: {user: {_neq: "DrikaRenee"}, _and: {user: {_neq: "adaezy"}}}}}}}}}} order_by: {count: desc}, limit: 1) {
-                user
-                count
-            }
-        }
-    */
 
   return gqlrequest;
 };
