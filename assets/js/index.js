@@ -29,6 +29,7 @@ const populateTable = (users, numToShow) => {
       let stepNumber = users[i].count;
       let repository = users[i].repoLink;
       let started = users[i].startTime.substring(0, 10);
+      let onTrack = users[i].onTrack;
 
       let row = document.createElement("tr");
       let valIndex = document.createElement("th");
@@ -37,6 +38,15 @@ const populateTable = (users, numToShow) => {
 
       let valGithub = document.createElement("td");
       valGithub.textContent = github;
+
+      let valBadges = document.createElement("td");
+      if (onTrack) {
+        valBadges.innerHTML = `<img src="https://user-images.githubusercontent.com/69332964/175657885-64fb198e-e770-459b-9fae-a4145c60c6bd.svg" alt="" style="width:auto; height:auto;">`;
+      }
+
+      if (i + 1 <= 4) {
+        valBadges.innerHTML += `<img src="https://user-images.githubusercontent.com/69332964/175657884-9cad6055-b9b6-4afa-aa23-9f6ac2ac9edc.svg" alt="" style="width:auto; height:auto;">`;
+      }
 
       let valStepname = document.createElement("td");
       valStepname.textContent = stepName;
@@ -56,6 +66,7 @@ const populateTable = (users, numToShow) => {
 
       row.appendChild(valIndex);
       row.appendChild(valGithub);
+      row.appendChild(valBadges);
       row.appendChild(valStepname);
       row.appendChild(valStepnumber);
       row.appendChild(valRepo);
