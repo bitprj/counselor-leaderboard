@@ -42,12 +42,14 @@ router.get("/api/leaderboard", async function (req, res) {
   for (var i = 0; i < 40; i++) {
     var user = await queryData(gqlrequest);
     if (user.data && user.data.users_progress[0]) {
+      var onTrack = checkProgress(user.data.users_progress[0].count);
       users.push({
         user: user.data.users_progress[0].user,
         count: user.data.users_progress[0].count,
         repoLink: user.data.users_progress[0].repo,
         title: user.data.users_progress[0].title,
         startTime: user.data.users_progress[0].startTime,
+        onTrack: onTrack
       });
       console.log(
         "Added " + user.data.users_progress[0].user + " to leaderboard"
@@ -108,6 +110,26 @@ const createRequest = (users) => {
   }
 
   return gqlrequest;
+};
+
+const checkProgress = (stepNum) => {
+  let onTrack = true;
+  var startTime = new Date(ISOdate);
+  var currentTime = new Date();
+  var daysSinceStart = (currentTime.getTime() - startTime.getTime()) / (1000 * 3600 * 24);
+
+  if (daysSinceStart > 28 && stepNum < 63) {
+    onTrack = false;
+  } else if (daysSinceStart > 21 && stepNum < 47) {
+    onTrack = false;
+  } else if (daysSinceStart > 14 && stepNum < 29) {
+    onTrack = false;
+  } else if (daysSinceStart > 7 && stepNum < 12) {
+    onTrack = false;
+  }
+
+  // returns true if they are on track
+  return (onTrack)
 };
 
 app.listen(process.env.PORT || 3000, () => console.log("Server is running..."));
